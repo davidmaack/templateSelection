@@ -27,6 +27,6 @@
  * @filesource
  */
  
-$GLOBALS['TL_LANG']['tl_settings']['copyright'] = array('Copyright', 'Here you can enter a custom copyright notice.');
+$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Here you can establish a mapping of the templates and devices.');
 
 ?>
