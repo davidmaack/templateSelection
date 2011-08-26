@@ -13,5 +13,5 @@
 -- 
 
 CREATE TABLE `tl_theme` (
-  `templateSelection` text NULL,
+  `templateSelection` blob NULL,
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;

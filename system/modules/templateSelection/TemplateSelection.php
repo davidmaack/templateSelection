@@ -60,18 +60,18 @@ class TemplateSelection extends Frontend
 
             $time = time();
             // Get the current page object
-            $objPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR alias=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
+            $objDBResultPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR alias=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                               ->execute((is_numeric($pageId) ? $pageId : 0), $pageId);
             
             // Check the URL of each page if there are multiple results
-            if ($objPage->numRows > 1)
+            if ($objDBResultPage->numRows > 1)
             {
                     $objNewPage = null;
                     $strHost = $this->Environment->host;
 
-                    while ($objPage->next())
+                    while ($objDBResultPage->next())
                     {
-                            $objCurrentPage = $this->getPageDetails($objPage->id);
+                            $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
 
                             // Look for a root page whose domain name matches the host name
                             if ($objCurrentPage->domain == $strHost || $objCurrentPage->domain == 'www.' . $strHost)
@@ -90,12 +90,12 @@ class TemplateSelection extends Frontend
                     // Matching root page found
                     if (is_object($objNewPage))
                     {
-                            $objPage = $objNewPage;
+                            $objDBResultPage = $objNewPage;
                     }
             }
             
             // get the page details
-            $objCurrentPage = $this->getPageDetails($objPage->id);
+            $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
             //get the theme
             $objTheme = $this->Database->prepare("SELECT * FROM tl_theme WHERE id = (SELECT pid FROM tl_layout where id =? LIMIT 0,1)")->limit(1)->execute($objCurrentPage->layout);
             //store templateSelections in cache
