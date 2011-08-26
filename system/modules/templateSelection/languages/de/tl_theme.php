@@ -27,6 +27,18 @@
  * @filesource
  */
  
-$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Hier können Sie eine Zuordnung der Templates und Endgeräte herstellen.');
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Hier können Sie die Zuordnung der Templates und Endgeräte herstellen.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'] = array('Betriebssystem', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'] = array('Browser', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_mobile'] = array('Mobile', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_extension'] = array('Templateformat', '');
+
+/**
+ * Legend
+ */
+$GLOBALS['TL_LANG']['tl_theme']['legend_template'] = 'Templateformate';
 
 ?>

@@ -22,7 +22,7 @@
  *
  * PHP version 5
  * @copyright  MEN AT WORK 2011
- * @package    Copyright
+ * @package    templateSelection
  * @license    LGPL
  * @filesource
  */
@@ -30,12 +30,13 @@
 /**
  * Add to palette
  */
-$GLOBALS['TL_DCA']['tl_theme']['palettes']['default'] = str_replace('screenshot', 'screenshot;{legend_templates},templateSelection', $GLOBALS['TL_DCA']['tl_theme']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_theme']['palettes']['default'] = str_replace('screenshot', 'screenshot;{legend_template},templateSelection', $GLOBALS['TL_DCA']['tl_theme']['palettes']['default']);
 
 /**
  * Add field
  */
-$GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array(
+$GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
+(
 	'label'		=> &$GLOBALS['TL_LANG']['tl_theme']['templateSelection'],
 	'exclude' => true,
 	'inputType' => 'multiColumnWizard',
@@ -43,67 +44,74 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array(
 	(
 		'columnFields' => array
 		(
-			'ts_engine' => array
+			'ts_client_os' => array
 			(
-				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_engine'],
+				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'],
 				'exclude'               => true,
 				'inputType'             => 'select',
 				'options'            	=> array
 				(
-					'OS' => array
-					(
-						'os-win'        => 'Windows',
-						'os-win-ce'     => 'Windows CE / Phone',
-						'os-mac'        => 'Macintosh',
-						'os-unix'       => 'UNIX (Linux, FreeBSD, OpenBSD, NetBSD)',
-						'os-ios'        => 'iOS (iPad, iPhone, iPod)',
-						'os-android'    => 'Android',
-						'os-blackberry' => 'Blackberry',
-						'os-symbian'    => 'Symbian',
-						'os-webos'      => 'WebOS'
-					),
-					'Browser' => array
-					(
-						'browser-ie'           => 'InternetExplorer',
-						'browser-ie-6'         => 'InternetExplorer 6',
-						'browser-ie-7'         => 'InternetExplorer 7',
-						'browser-ie-8'         => 'InternetExplorer 8',
-						'browser-ie-9'         => 'InternetExplorer 9',
-						'browser-ie-10'        => 'InternetExplorer 10',
-						'browser-ie-mobile'    => 'InternetExplorer Mobile',
-						'browser-firefox'      => 'Firefox',
-						'browser-firefox-3'    => 'Firefox-3',
-						'browser-firefox-4'    => 'Firefox-4',
-						'browser-firefox-5'    => 'Firefox-5',
-						'browser-firefox-6'    => 'Firefox-6',
-						'browser-chrome'       => 'Chrome',
-						'browser-chrome-10'    => 'Chrome-10',
-						'browser-chrome-11'    => 'Chrome-11',
-						'browser-chrome-12'    => 'Chrome-12',
-						'browser-omniweb'      => 'OmniWeb',
-						'browser-safari'       => 'Safari',
-						'browser-safari-4'     => 'Safari 4',
-						'browser-safari-5'     => 'Safari 5',
-						'browser-opera'        => 'Opera',
-						'browser-opera-mini'   => 'Opera Mini',
-						'browser-opera-mobile' => 'Opera Mobile',
-						'browser-camino'       => 'Camino',
-						'browser-konqueror'    => 'Konqueror',
-						'browser-other'        => 'Other'
-					),
-					'Other' => array
-					(
-						'@mobile' => 'Mobile Client'
-					)
+                                        'os-win'        => 'Windows',
+                                        'os-win-ce'     => 'Windows CE / Phone',
+                                        'os-mac'        => 'Macintosh',
+                                        'os-unix'       => 'UNIX (Linux, FreeBSD, OpenBSD, NetBSD)',
+                                        'os-ios'        => 'iOS (iPad, iPhone, iPod)',
+                                        'os-android'    => 'Android',
+                                        'os-blackberry' => 'Blackberry',
+                                        'os-symbian'    => 'Symbian',
+                                        'os-webos'      => 'WebOS'
 				),
-				'default' 				=> 'de',
-				'eval'                  => array('style'=>'width:200px')
+				'eval'                  => array('style'=>'width:250px', 'includeBlankOption'=>true)
+			),
+                        'ts_client_browser' => array
+			(
+				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'],
+				'exclude'               => true,
+				'inputType'             => 'select',
+				'options'            	=> array
+				(
+                                        'browser-ie'           => 'InternetExplorer',
+                                        'browser-ie-6'         => 'InternetExplorer 6',
+                                        'browser-ie-7'         => 'InternetExplorer 7',
+                                        'browser-ie-8'         => 'InternetExplorer 8',
+                                        'browser-ie-9'         => 'InternetExplorer 9',
+                                        'browser-ie-10'        => 'InternetExplorer 10',
+                                        'browser-ie-mobile'    => 'InternetExplorer Mobile',
+                                        'browser-firefox'      => 'Firefox',
+                                        'browser-firefox-3'    => 'Firefox-3',
+                                        'browser-firefox-4'    => 'Firefox-4',
+                                        'browser-firefox-5'    => 'Firefox-5',
+                                        'browser-firefox-6'    => 'Firefox-6',
+                                        'browser-chrome'       => 'Chrome',
+                                        'browser-chrome-10'    => 'Chrome-10',
+                                        'browser-chrome-11'    => 'Chrome-11',
+                                        'browser-chrome-12'    => 'Chrome-12',
+                                        'browser-omniweb'      => 'OmniWeb',
+                                        'browser-safari'       => 'Safari',
+                                        'browser-safari-4'     => 'Safari 4',
+                                        'browser-safari-5'     => 'Safari 5',
+                                        'browser-opera'        => 'Opera',
+                                        'browser-opera-mini'   => 'Opera Mini',
+                                        'browser-opera-mobile' => 'Opera Mobile',
+                                        'browser-camino'       => 'Camino',
+                                        'browser-konqueror'    => 'Konqueror',
+                                        'browser-other'        => 'Other'
+				),
+				'eval'                  => array('style'=>'width:180px', 'includeBlankOption'=>true)
+			),
+                        'ts_client_mobile' => array
+			(
+				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client_mobile'],
+				'exclude'               => true,
+				'inputType'             => 'checkbox',
+				'eval'                  => array('style'=>'width:40px')
+
 			),
 			'ts_extension' => array
 			(
-				'label' 				=> &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
-				'inputType' 			=> 'text',
-				'eval'                  => array('mandatory'=>true, 'style'=>'width:100px')
+				'label' 		=> &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
+				'inputType' 		=> 'text',
+				'eval'                  => array('mandatory'=>true, 'style'=>'width:115px')
 			),
 		)
 	)

@@ -27,6 +27,18 @@
  * @filesource
  */
  
-$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Here you can establish a mapping of the templates and devices.');
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Here you cam map clients to a custom file type.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'] = array('Operating system', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'] = array('Browser', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_mobile'] = array('Mobile', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_extension'] = array('File type', '');
+
+/**
+ * Legend
+ */
+$GLOBALS['TL_LANG']['tl_theme']['legend_template'] = 'Template file types';
 
 ?>
