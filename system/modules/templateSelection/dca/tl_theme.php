@@ -22,7 +22,7 @@
  *
  * PHP version 5
  * @copyright  MEN AT WORK 2011
- * @package    templateSelection
+ * @package    Copyright
  * @license    LGPL
  * @filesource
  */
@@ -30,13 +30,12 @@
 /**
  * Add to palette
  */
-$GLOBALS['TL_DCA']['tl_theme']['palettes']['default'] = str_replace('screenshot', 'screenshot;{legend_template},templateSelection', $GLOBALS['TL_DCA']['tl_theme']['palettes']['default']);
+$GLOBALS['TL_DCA']['tl_theme']['palettes']['default'] = str_replace('screenshot', 'screenshot;{legend_templates},templateSelection', $GLOBALS['TL_DCA']['tl_theme']['palettes']['default']);
 
 /**
  * Add field
  */
-$GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
-(
+$GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array(
 	'label'		=> &$GLOBALS['TL_LANG']['tl_theme']['templateSelection'],
 	'exclude' => true,
 	'inputType' => 'multiColumnWizard',
@@ -44,9 +43,9 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 	(
 		'columnFields' => array
 		(
-			'ts_client' => array
+			'ts_engine' => array
 			(
-				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client'],
+				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_engine'],
 				'exclude'               => true,
 				'inputType'             => 'select',
 				'options'            	=> array
@@ -98,13 +97,13 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 					)
 				),
 				'default' 				=> 'de',
-				'eval'                  => array('style'=>'width:300px')
+				'eval'                  => array('style'=>'width:200px')
 			),
 			'ts_extension' => array
 			(
 				'label' 				=> &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
 				'inputType' 			=> 'text',
-				'eval'                  => array('mandatory'=>true, 'style'=>'width:200px')
+				'eval'                  => array('mandatory'=>true, 'style'=>'width:100px')
 			),
 		)
 	)

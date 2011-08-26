@@ -27,6 +27,6 @@
  * @filesource
  */
  
-$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Hier können Sie eine Zuordnung der Templates und Endgeräte herstellen.');
+$GLOBALS['TL_LANG']['tl_settings']['copyright'] = array('Copyright', 'Here you can enter a custom copyright notice.');
 
 ?>

@@ -27,8 +27,7 @@
  * @filesource
  */
 
-//$GLOBALS['TL_HOOKS']['generatePage'][] = array('TemplateSelection', 'changeTemplate');
-$GLOBALS['TL_HOOKS']['parseTemplate'][] = array('TemplateSelection', 'test');
+$GLOBALS['TL_HOOKS']['parseTemplate'][] = array('TemplateSelection', 'changeTemplate');
 
 
 ?>
