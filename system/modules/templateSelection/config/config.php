@@ -29,5 +29,4 @@
 
 $GLOBALS['TL_HOOKS']['parseTemplate'][] = array('TemplateSelection', 'changeTemplate');
 
-
 ?>
