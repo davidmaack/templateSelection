@@ -111,7 +111,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 			(
 				'label' 				=> &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
 				'inputType' 			=> 'text',
-				'eval'                  => array('mandatory'=>true, 'style'=>'width:115px')
+				'eval'                  => array('style'=>'width:115px')
 			),
 		)
 	)
