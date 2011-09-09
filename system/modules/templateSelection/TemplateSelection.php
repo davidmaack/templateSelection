@@ -62,7 +62,7 @@ class TemplateSelection extends Frontend
             // Get the current page object
             $objDBResultPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR alias=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
                                                               ->execute((is_numeric($pageId) ? $pageId : 0), $pageId);
-            
+
             // Check the URL of each page if there are multiple results
             if ($objDBResultPage->numRows > 1)
             {
@@ -116,7 +116,8 @@ class TemplateSelection extends Frontend
 
         //get agent
         $agent = $this->Environment->agent;
-
+        if (!is_array($arrTemplateSelection)) return; 
+        
         foreach ($arrTemplateSelection as $selection)
         {
             preg_match('#^os-(.*)$#', $selection['ts_client_os'], $os);
