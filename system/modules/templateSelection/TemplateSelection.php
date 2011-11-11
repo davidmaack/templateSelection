@@ -35,17 +35,20 @@ class TemplateSelection extends Frontend
 
     protected static $arrThemeCache = array();
     protected static $arrStrFileCache = array();
-    
+
     /**
      *
      * @param type $template
-     */ 
+     */
     public function changeTemplate(&$template)
     {
-        if (TL_MODE == 'BE') return;
+        if (TL_MODE == 'BE')
+        {
+            return;
+        }
 
         $arrTemplateSelection = (self::$arrThemeCache[$this->Environment->__get('request')]) ? self::$arrThemeCache[$this->Environment->__get('request')] : false;
-        
+
         if (!$arrTemplateSelection)
         {
             // Get page ID
@@ -61,39 +64,39 @@ class TemplateSelection extends Frontend
             $time = time();
             // Get the current page object
             $objDBResultPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR alias=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                                                              ->execute((is_numeric($pageId) ? $pageId : 0), $pageId);
+                    ->execute((is_numeric($pageId) ? $pageId : 0), $pageId);
 
             // Check the URL of each page if there are multiple results
             if ($objDBResultPage->numRows > 1)
             {
-                    $objNewPage = null;
-                    $strHost = $this->Environment->host;
+                $objNewPage = null;
+                $strHost = $this->Environment->host;
 
-                    while ($objDBResultPage->next())
+                while ($objDBResultPage->next())
+                {
+                    $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
+
+                    // Look for a root page whose domain name matches the host name
+                    if ($objCurrentPage->domain == $strHost || $objCurrentPage->domain == 'www.' . $strHost)
                     {
-                            $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
-
-                            // Look for a root page whose domain name matches the host name
-                            if ($objCurrentPage->domain == $strHost || $objCurrentPage->domain == 'www.' . $strHost)
-                            {
-                                    $objNewPage = $objCurrentPage;
-                                    break;
-                            }
-
-                            // Fall back to a root page without domain name
-                            if ($objCurrentPage->domain == '')
-                            {
-                                    $objNewPage = $objCurrentPage;
-                            }
+                        $objNewPage = $objCurrentPage;
+                        break;
                     }
 
-                    // Matching root page found
-                    if (is_object($objNewPage))
+                    // Fall back to a root page without domain name
+                    if ($objCurrentPage->domain == '')
                     {
-                            $objDBResultPage = $objNewPage;
+                        $objNewPage = $objCurrentPage;
                     }
+                }
+
+                // Matching root page found
+                if (is_object($objNewPage))
+                {
+                    $objDBResultPage = $objNewPage;
+                }
             }
-            
+
             // get the page details
             $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
             //get the theme
@@ -102,11 +105,10 @@ class TemplateSelection extends Frontend
             $arrTemplateSelection = deserialize($objTheme->templateSelection);
             self::$arrThemeCache[$this->Environment->__get('request')] = $arrTemplateSelection;
         }
-        
+
         //check for cached results
-        $strFormat = (self::$arrStrFileCache[$this->Environment->__get('request').'-'.$template->getName()]) ? 
-                    (self::$arrStrFileCache[$this->Environment->__get('request').'-'.$template->getName()]) :false;
-        
+        $strFormat = (self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()]) ? (self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()]) : false;
+
         //setFormat if format was allready cached
         if ($strFormat)
         {
@@ -116,27 +118,26 @@ class TemplateSelection extends Frontend
 
         //get agent
         $agent = $this->Environment->agent;
-        if (!is_array($arrTemplateSelection)) return; 
-        
+        if (!is_array($arrTemplateSelection)) return;
+
         foreach ($arrTemplateSelection as $selection)
         {
             preg_match('#^os-(.*)$#', $selection['ts_client_os'], $os);
             preg_match('#^browser-(.*?)(?:-(\d+))?$#', $selection['ts_client_browser'], $browser);
-            
+
             if (
-                    (empty($os[1]) || ($os[1] == $agent->os)) && 
-                    (empty($browser[1]) || ($browser[1] == $agent->browser)) && 
-                    (empty($browser[2]) || (floatval($browser[2]) == $agent->version)) && 
-                    ($agent->mobile == $selection['ts_client_mobile']) 
-                )
-            {           
+                    (empty($os[1]) || ($os[1] == $agent->os)) &&
+                    (empty($browser[1]) || ($browser[1] == $agent->browser)) &&
+                    (empty($browser[2]) || (floatval($browser[2]) == $agent->version)) &&
+                    ($agent->mobile == $selection['ts_client_mobile'])
+            )
+            {
                 $this->extendTemplate($template, $selection['ts_extension']);
                 return;
             }
-        }        
+        }
     }
-   
-    
+
     /**
      *
      * @param type $template
@@ -144,16 +145,35 @@ class TemplateSelection extends Frontend
      */
     private function extendTemplate(&$template, $ext)
     {
-        if (file_exists(TL_ROOT . '/templates/'.$template->getName().'.'.$ext))
+        global $objPage;
+
+        $strTemplateGroup = str_replace(array('../', 'templates/'), '', $objPage->templateGroup);
+
+        if ($strTemplateGroup != '')
+        {
+            $strFile = $strTemplateGroup . '/' . $template->getName();
+            //check folder
+            if (file_exists(TL_ROOT . '/templates/' . $strFile . '.' . $ext))
+            {
+                //setFormat
+                $template->setFormat($ext);
+                //store format in cache
+                self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
+                
+                return;
+            }
+        }
+
+        //check folder
+        if (file_exists(TL_ROOT . '/templates/' . $template->getName() . '.' . $ext))
         {
             //setFormat
             $template->setFormat($ext);
             //store format in cache
-            self::$arrStrFileCache[$this->Environment->__get('request').'-'.$template->getName()] = $ext;
+            self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
         }
     }
 
-    
 }
 
 ?>

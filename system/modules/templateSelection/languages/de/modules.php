@@ -27,4 +27,6 @@
  * @filesource
  */
 
-$GLOBALS['TL_LANG']['MOD']['templateSelection'] = array('templateSelection', '');
+
+$GLOBALS['TL_LANG']['MOD']['templateSelection'] = array('Eigene Templateformate', '');
+
