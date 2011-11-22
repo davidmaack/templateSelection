@@ -28,7 +28,7 @@
  */
 
 /**
- * Class BaciFeHelper 
+ * Class templateSelection
  */
 class TemplateSelection extends Frontend
 {
@@ -37,8 +37,10 @@ class TemplateSelection extends Frontend
     protected static $arrStrFileCache = array();
 
     /**
-     *
-     * @param type $template
+     * Function for change the template
+     * 
+     * @param array $template
+     * @return array 
      */
     public function changeTemplate(&$template)
     {
@@ -139,9 +141,10 @@ class TemplateSelection extends Frontend
     }
 
     /**
-     *
-     * @param type $template
-     * @param type $ext 
+     * Extend the template subfolders
+     * 
+     * @param array $template
+     * @param array $ext 
      */
     private function extendTemplate(&$template, $ext)
     {
@@ -159,7 +162,7 @@ class TemplateSelection extends Frontend
                 $template->setFormat($ext);
                 //store format in cache
                 self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
-                
+
                 return;
             }
         }
@@ -172,6 +175,18 @@ class TemplateSelection extends Frontend
             //store format in cache
             self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
         }
+    }
+
+    /**
+     * Check and delete the first dot
+     * 
+     * @param string $strValue
+     * @param DataContainer $dc
+     * @return string 
+     */
+    public function checkFirstDot($strValue)
+    {
+        return strncmp($strValue, '.', 1) == 0 ? substr($strValue, 1) : $strValue;
     }
 
 }

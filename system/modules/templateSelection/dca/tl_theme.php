@@ -61,7 +61,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
                                         'os-symbian'    => 'Symbian',
                                         'os-webos'      => 'WebOS'
 				),
-				'eval' 					=> array('style'=>'width:250px', 'includeBlankOption'=>true)
+				'eval'                  => array('style'=>'width:250px', 'includeBlankOption'=>true)
 			),
 			'ts_client_browser' => array
 			(
@@ -97,7 +97,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
                                         'browser-konqueror'    => 'Konqueror',
                                         'browser-other'        => 'Other'
 				),
-				'eval' 					=> array('style'=>'width:180px', 'includeBlankOption'=>true)
+				'eval'                  => array('style'=>'width:180px', 'includeBlankOption'=>true)
 			),
 			'ts_client_mobile' => array
 			(
@@ -109,9 +109,12 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 			),
 			'ts_extension' => array
 			(
-				'label' 				=> &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
-				'inputType' 			=> 'text',
-				'eval'                  => array('style'=>'width:115px')
+				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_extension'],
+				'inputType'             => 'text',
+				'eval'                  => array('style'=>'width:115px'),
+				'save_callback' => array(
+					array('TemplateSelection', 'checkFirstDot')
+				)
 			),
 		)
 	)
