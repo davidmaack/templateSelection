@@ -78,18 +78,9 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
                                         'browser-ie-10'        => 'InternetExplorer 10',
                                         'browser-ie-mobile'    => 'InternetExplorer Mobile',
                                         'browser-firefox'      => 'Firefox',
-                                        'browser-firefox-3'    => 'Firefox-3',
-                                        'browser-firefox-4'    => 'Firefox-4',
-                                        'browser-firefox-5'    => 'Firefox-5',
-                                        'browser-firefox-6'    => 'Firefox-6',
                                         'browser-chrome'       => 'Chrome',
-                                        'browser-chrome-10'    => 'Chrome-10',
-                                        'browser-chrome-11'    => 'Chrome-11',
-                                        'browser-chrome-12'    => 'Chrome-12',
                                         'browser-omniweb'      => 'OmniWeb',
                                         'browser-safari'       => 'Safari',
-                                        'browser-safari-4'     => 'Safari 4',
-                                        'browser-safari-5'     => 'Safari 5',
                                         'browser-opera'        => 'Opera',
                                         'browser-opera-mini'   => 'Opera Mini',
                                         'browser-opera-mobile' => 'Opera Mobile',
@@ -120,4 +111,10 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 	)
 );
 
+// Set chosen if we have a contao version 2.11
+if (version_compare(VERSION, "2.11", ">="))
+{
+    $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection']['eval']['columnFields']['ts_client_os']['eval']['chosen'] = true;
+    $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection']['eval']['columnFields']['ts_client_browser']['eval']['chosen'] = true;
+}
 ?>
