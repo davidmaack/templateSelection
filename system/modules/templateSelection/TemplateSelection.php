@@ -44,72 +44,46 @@ class TemplateSelection extends Frontend
      */
     public function changeTemplate(&$template)
     {
+        
         if (TL_MODE == 'BE')
         {
             return;
         }
-
-        $arrTemplateSelection = (self::$arrThemeCache[$this->Environment->__get('request')]) ? self::$arrThemeCache[$this->Environment->__get('request')] : false;
+        
+        global $objPage;
+        
+        $arrTemplateSelection = (self::$arrThemeCache[$objPage->id]) ? self::$arrThemeCache[$objPage->id] : false;
 
         if (!$arrTemplateSelection)
         {
-            // Get page ID
-            $pageId = $this->getPageIdFromUrl();
-
-            // Load a website root page object if there is no page ID
-            if (is_null($pageId))
-            {
-                $objHandler = new $GLOBALS['TL_PTY']['root']();
-                $pageId = $objHandler->generate($this->getRootIdFromUrl(), true);
+         
+            $arrTmp = $this->inheritSelection($objPage);
+            if ($objPage->ts_include_selection_noinherit) {
+                    $arrTmp = array_merge($arrTmp, deserialize($objPage->ts_selection_noinherit, true));
             }
-
-            $time = time();
-            // Get the current page object
-            $objDBResultPage = $this->Database->prepare("SELECT * FROM tl_page WHERE (id=? OR alias=?)" . (!BE_USER_LOGGED_IN ? " AND (start='' OR start<$time) AND (stop='' OR stop>$time) AND published=1" : ""))
-                    ->execute((is_numeric($pageId) ? $pageId : 0), $pageId);
-
-            // Check the URL of each page if there are multiple results
-            if ($objDBResultPage->numRows > 1)
+            
+            if (count($arrTmp) > 0)
             {
-                $objNewPage = null;
-                $strHost = $this->Environment->host;
-
-                while ($objDBResultPage->next())
-                {
-                    $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
-
-                    // Look for a root page whose domain name matches the host name
-                    if ($objCurrentPage->domain == $strHost || $objCurrentPage->domain == 'www.' . $strHost)
-                    {
-                        $objNewPage = $objCurrentPage;
-                        break;
-                    }
-
-                    // Fall back to a root page without domain name
-                    if ($objCurrentPage->domain == '')
-                    {
-                        $objNewPage = $objCurrentPage;
-                    }
-                }
-
-                // Matching root page found
-                if (is_object($objNewPage))
-                {
-                    $objDBResultPage = $objNewPage;
-                }
+                self::$arrThemeCache[$objPage->id] = $arrTmp;
             }
+            else
+            {
+                // get the page details
+                $objCurrentPage = $this->getPageDetails($objPage->id);
 
-            // get the page details
-            $objCurrentPage = $this->getPageDetails($objDBResultPage->id);
-            //get the theme
-            $objTheme = $this->Database->prepare("SELECT * FROM tl_theme WHERE id = (SELECT pid FROM tl_layout where id =? LIMIT 0,1)")->limit(1)->execute($objCurrentPage->layout);
-            //store templateSelections in cache
-            $arrTemplateSelection = deserialize($objTheme->templateSelection);
-            self::$arrThemeCache[$this->Environment->__get('request')] = $arrTemplateSelection;
+                //get the theme
+                $objTheme = $this->Database->prepare("SELECT l.*, t.templates, t.templateSelection FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
+                                                                            ->limit(1)
+                                                                            ->execute($objPage->id, $objPage->id);            
+
+                //store templateSelections in cache
+                $arrTemplateSelection = deserialize($objTheme->templateSelection);
+                self::$arrThemeCache[$objPage->id] = $arrTemplateSelection;
+            }            
         }
 
         //check for cached results
-        $strFormat = (self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()]) ? (self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()]) : false;
+        $strFormat = (self::$arrStrFileCache[$objPage->id . '-' . $template->getName()]) ? (self::$arrStrFileCache[$objPage->id . '-' . $template->getName()]) : false;
 
         //setFormat if format was allready cached
         if ($strFormat)
@@ -121,18 +95,45 @@ class TemplateSelection extends Frontend
         //get agent
         $agent = $this->Environment->agent;
         if (!is_array($arrTemplateSelection)) return;
-
+        
+        $blnGlobalPermisson = false;
         foreach ($arrTemplateSelection as $selection)
         {
-            preg_match('#^os-(.*)$#', $selection['ts_client_os'], $os);
-            preg_match('#^browser-(.*?)(?:-(\d+))?$#', $selection['ts_client_browser'], $browser);
 
-            if (
-                    (empty($os[1]) || ($os[1] == $agent->os)) &&
-                    (empty($browser[1]) || ($browser[1] == $agent->browser)) &&
-                    (empty($browser[2]) || (floatval($browser[2]) == $agent->version)) &&
-                    ($agent->mobile == $selection['ts_client_mobile'])
-            )
+            $selection['ts_client_os'] = ($selection['ts_client_os'] != '') ? array('value' => $selection['ts_client_os'], 'config' => $GLOBALS['TL_CONFIG']['os'][$selection['ts_client_os']]) : false;
+            $selection['ts_client_browser']   = ($selection['ts_client_browser'] != '') ? $GLOBALS['TL_CONFIG']['browser'][$selection['ts_client_browser']] : false;
+            
+            $blnPermisson = true;
+            foreach ($selection as $strConfig => $mixedConfig)
+            {
+                switch ($strConfig)
+                {
+                    case 'ts_client_os':
+                        $blnPermisson = ($blnPermisson && $this->checkOsPermission($mixedConfig, $agent));
+                        break;
+
+                    case 'ts_client_browser':
+                        $blnPermisson = ($blnPermisson && ($mixedConfig['browser'] == $agent->browser || $mixedConfig['browser'] == '')) ? true : false;
+                        break;
+
+                    case 'ts_client_browser_version':
+                        $blnPermisson = ($blnPermisson && ($mixedConfig == $agent->version || $mixedConfig == '')) ? true : false;
+                        break;
+
+                    case 'ts_client_is_mobile':
+                        $blnPermisson = ($blnPermisson && $mixedConfig == $agent->mobile) ? true : false;
+                        break;
+
+                    case 'ts_client_is_invert':
+                        if ($mixedConfig)
+                        {
+                            $blnPermisson = ($blnPermisson) ? false : true;
+                        }
+                        break;
+                }    
+            }
+            
+            if ($blnPermisson)
             {
                 $this->extendTemplate($template, $selection['ts_extension']);
                 return;
@@ -188,7 +189,83 @@ class TemplateSelection extends Frontend
     {
         return strncmp($strValue, '.', 1) == 0 ? substr($strValue, 1) : $strValue;
     }
+    
+    /**
+     * Check if the operation system has permission
+     * 
+     * @param mixed $mixedConfig
+     * @param stdClass $objUa
+     * @return boolean 
+     */
+    private function checkOsPermission($mixedConfig, $objUa)
+    {
+        $arrIOs = array('iPad', 'iPhone', 'iPod');
+        
+        if ($mixedConfig)
+        {   
 
+            if ($mixedConfig['config']['os'] == $objUa->os)
+            {                
+
+                if (in_array($mixedConfig['value'], $arrIOs))
+                {
+                    if (strpos($objUa->string, $mixedConfig['value']) !== false)
+                    {
+                        return true;
+                    }
+                }
+                else
+                {
+
+                    return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+
+            return true;
+        }
+    }
+    
+    /**
+        * Inherit selections from pages.
+        *
+        * @param Database_Result $objPage
+        */
+    public function inheritSelection(Database_Result $objPage)
+    {
+
+            if ($objPage->ts_include_selection) {
+                    $arrTemp = deserialize($objPage->ts_selection, true);
+            }
+            else
+            {
+                    $arrTemp = array();
+            }
+
+            if ($objPage->pid > 0) {
+                    $objParentPage = $this->Database->prepare("
+                                    SELECT
+                                            *
+                                    FROM
+                                            tl_page
+                                    WHERE
+                                            id=?")
+                            ->execute($objPage->pid);
+                    if ($objParentPage->next()) {
+                            $arrTemp = array_merge
+                            (
+                                    $arrTemp,
+                                    $this->inheritSelection($objParentPage)
+                            );
+                    }
+            }
+            return $arrTemp;
+    }    
+    
+    
 }
 
 ?>
