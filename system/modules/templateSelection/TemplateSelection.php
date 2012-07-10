@@ -177,6 +177,18 @@ class TemplateSelection extends Frontend
             self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
         }
     }
+
+    /**
+     * Check and delete the first dot
+     * 
+     * @param string $strValue
+     * @param DataContainer $dc
+     * @return string 
+     */
+    public function checkFirstDot($strValue)
+    {
+        return strncmp($strValue, '.', 1) == 0 ? substr($strValue, 1) : $strValue;
+    }
     
     /**
         * Inherit selections from pages.
