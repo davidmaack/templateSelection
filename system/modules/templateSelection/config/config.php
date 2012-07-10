@@ -29,15 +29,4 @@
 
 $GLOBALS['TL_HOOKS']['parseTemplate'][] = array('TemplateSelection', 'changeTemplate');
 
-//insert iOS entry
-if (array_search('iPad', array_keys($GLOBALS['TL_CONFIG']['os'])) !== flase)
-{
-    $i = array_search('iPad', array_keys($GLOBALS['TL_CONFIG']['os']));
-    $GLOBALS['TL_CONFIG']['os'] = array_merge(
-            array_slice($GLOBALS['TL_CONFIG']['os'], 0, $i), array(
-                'iOs'          => array('os'=>'ios',        'mobile'=>true),
-            ), array_slice($GLOBALS['TL_CONFIG']['os'], $i)
-    );
-}
-//print_r($GLOBALS['TL_CONFIG']['os']);
 ?>

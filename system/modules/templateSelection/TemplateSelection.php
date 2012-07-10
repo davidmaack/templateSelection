@@ -109,7 +109,7 @@ class TemplateSelection extends Frontend
                 switch ($strConfig)
                 {
                     case 'ts_client_os':
-                        $blnPermisson = ($blnPermisson && $this->checkOsPermission($mixedConfig, $agent));
+                        $blnPermisson = ($blnPermisson && AgentSelection::checkOsPermission($mixedConfig, $agent));
                         break;
 
                     case 'ts_client_browser':
@@ -175,57 +175,6 @@ class TemplateSelection extends Frontend
             $template->setFormat($ext);
             //store format in cache
             self::$arrStrFileCache[$this->Environment->__get('request') . '-' . $template->getName()] = $ext;
-        }
-    }
-
-    /**
-     * Check and delete the first dot
-     * 
-     * @param string $strValue
-     * @param DataContainer $dc
-     * @return string 
-     */
-    public function checkFirstDot($strValue)
-    {
-        return strncmp($strValue, '.', 1) == 0 ? substr($strValue, 1) : $strValue;
-    }
-    
-    /**
-     * Check if the operation system has permission
-     * 
-     * @param mixed $mixedConfig
-     * @param stdClass $objUa
-     * @return boolean 
-     */
-    private function checkOsPermission($mixedConfig, $objUa)
-    {
-        $arrIOs = array('iPad', 'iPhone', 'iPod');
-        
-        if ($mixedConfig)
-        {   
-
-            if ($mixedConfig['config']['os'] == $objUa->os)
-            {                
-
-                if (in_array($mixedConfig['value'], $arrIOs))
-                {
-                    if (strpos($objUa->string, $mixedConfig['value']) !== false)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-
-                    return true;
-                }
-            }
-            return false;
-        }
-        else
-        {
-
-            return true;
         }
     }
     

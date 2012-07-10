@@ -51,7 +51,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'],
 				'exclude'               => true,
 				'inputType'             => 'select',
-                                'options_callback'      => array('tl_content_templateSelection', 'getClientOs'),
+                                'options_callback'      => array('AgentSelection', 'getClientOs'),
 				'eval'                  => array('style'=>'width:200px', 'includeBlankOption'=>true, 'chosen' => true)
 			),
 			'ts_client_browser' => array
@@ -59,7 +59,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 				'label'                 => &$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'],
 				'exclude'               => true,
 				'inputType'             => 'select',
-				'options_callback'      => array('tl_content_templateSelection', 'getClientBrowser'),
+				'options_callback'      => array('AgentSelection', 'getClientBrowser'),
 				'eval'                  => array('style'=>'width:150px', 'includeBlankOption'=>true, 'chosen' => true)
 			),
                         'ts_client_browser_version'     => array
@@ -94,53 +94,5 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
 		)
 	)
 );
-
-/**
- * Class tl_content_contentSelection
- * Provide miscellaneous methods that are used by the data configuration array.
- *
- * @copyright  MEN AT WORK 2012
- * @package    contentSelection
- * @license    GNU/GPL 2
- * @filesource
- */
-class tl_content_templateSelection extends Controller
-{
-
-    /**
-     * Return option array for operation systems
-     * 
-     * @return array
-     */
-    public function getClientOs()
-    {
-        $arrOptions = array();
-
-        foreach ($GLOBALS['TL_CONFIG']['os'] as $strLabel => $arrOs)
-        {
-            $arrOptions[$strLabel] = $strLabel;
-        }
-
-        return $arrOptions;
-    }
-
-    /**
-     * Return browser array for operation systems
-     * 
-     * @return array
-     */
-    public function getClientBrowser()
-    {
-        $arrOptions = array();
-
-        foreach ($GLOBALS['TL_CONFIG']['browser'] as $strLabel => $arrBrowser)
-        {
-            $arrOptions[$strLabel] = $strLabel;
-        }
-
-        return $arrOptions;
-    }
-
-}
 
 ?>

@@ -66,7 +66,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
 				'label'                 => &$GLOBALS['TL_LANG']['tl_page']['ts_client_os'],
 				'exclude'               => true,
 				'inputType'             => 'select',
-                                'options_callback'      => array('tl_page_templateSelection', 'getClientOs'),
+                                'options_callback'      => array('AgentSelection', 'getClientOs'),
 				'eval'                  => array('style'=>'width:180px', 'includeBlankOption'=>true, 'chosen' => true)
 			),
 			'ts_client_browser' => array
@@ -74,7 +74,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
 				'label'                 => &$GLOBALS['TL_LANG']['tl_page']['ts_client_browser'],
 				'exclude'               => true,
 				'inputType'             => 'select',
-				'options_callback'      => array('tl_page_templateSelection', 'getClientBrowser'),
+				'options_callback'      => array('AgentSelection', 'getClientBrowser'),
 				'eval'                  => array('style'=>'width:140px', 'includeBlankOption'=>true, 'chosen' => true)
 			),
                         'ts_client_browser_version'     => array
@@ -129,54 +129,5 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_include_selection_noinherit']       
 	'inputType'               => 'checkbox',
 	'eval'                    => array('submitOnChange'=> true)
 );
-
-
-/**
- * Class tl_page_templateSelection
- * Provide miscellaneous methods that are used by the data configuration array.
- *
- * @copyright  MEN AT WORK 2012
- * @package    contentSelection
- * @license    GNU/GPL 2
- * @filesource
- */
-class tl_page_templateSelection extends Controller
-{
-
-    /**
-     * Return option array for operation systems
-     * 
-     * @return array
-     */
-    public function getClientOs()
-    {
-        $arrOptions = array();
-
-        foreach ($GLOBALS['TL_CONFIG']['os'] as $strLabel => $arrOs)
-        {
-            $arrOptions[$strLabel] = $strLabel;
-        }
-
-        return $arrOptions;
-    }
-
-    /**
-     * Return browser array for operation systems
-     * 
-     * @return array
-     */
-    public function getClientBrowser()
-    {
-        $arrOptions = array();
-
-        foreach ($GLOBALS['TL_CONFIG']['browser'] as $strLabel => $arrBrowser)
-        {
-            $arrOptions[$strLabel] = $strLabel;
-        }
-
-        return $arrOptions;
-    }
-
-}
 
 ?>
