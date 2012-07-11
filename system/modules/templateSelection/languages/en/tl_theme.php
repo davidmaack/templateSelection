@@ -1,8 +1,8 @@
-<?php if (!defined('TL_ROOT')) die('You can not access this file directly!');
+<?php if (!defined('TL_ROOT')) die('You cannot access this file directly!');
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,24 +21,25 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  MEN AT WORK 2011
- * @package    Language
- * @license    GNU/LGPL 
+ * @copyright  MEN AT WORK 2012
+ * @package    templateSelection
+ * @license    GNU/GPL 2
  * @filesource
  */
- 
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Here you cam map clients to a custom file type.');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'] = array('Operating system', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'] = array('Browser', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_mobile'] = array('Mobile', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_extension'] = array('File type', '');
 
 /**
  * Legend
  */
-$GLOBALS['TL_LANG']['tl_theme']['legend_template'] = 'Template file types';
+$GLOBALS['TL_LANG']['tl_theme']['legend_template']              = 'Template file types';
 
-?>
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_theme']['templateSelection']            = array('Templates', 'Here you can map clients to a custom file type.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_os']                 = array('System', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser']            = array('Browser', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser_version']    = array('Version', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser_operation']  = array('Operator', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_mobile']          = array('Mobile', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_invert']          = array('Invert', '');
+$GLOBALS['TL_LANG']['tl_theme']['ts_extension']                 = array('File type', '');
