@@ -55,8 +55,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
                 ),
                 'eval' => array(
                     'style' => 'width:125px',
-                    'includeBlankOption' => true,
-                    'chosen' => true
+                    'includeBlankOption' => true
                 )
             ),
             'ts_client_browser' => array
@@ -67,8 +66,7 @@ $GLOBALS['TL_DCA']['tl_theme']['fields']['templateSelection'] = array
                 'options_callback' => array('AgentSelection', 'getClientBrowser'),
                 'eval' => array(
                     'style' => 'width:125px',
-                    'includeBlankOption' => true,
-                    'chosen' => true
+                    'includeBlankOption' => true
                 )
             ),
             'ts_client_browser_operation' => array
