@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2010 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -10,37 +10,37 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  MEN AT WORK 2011
- * @package    Language
- * @license    GNU/LGPL
+ * @copyright  MEN AT WORK 2012
+ * @package    templateSelection
+ * @license    GNU/GPL 2
  * @filesource
  */
-
-/**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Hier können Sie die Zuordnung der Templates und Endgeräte herstellen.');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'] = array('Betriebssystem', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'] = array('Browser', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser_version'] = array('Version', 'Geben Sie hier die zu filternde Browser Version ein.');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_mobile'] = array('Mobile', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_extension'] = array('Templateformat', '');
-$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_invert'] = array('Umkehren', 'Hiermit können Sie die Filterlogik umkehren.');
 
 /**
  * Legend
  */
 $GLOBALS['TL_LANG']['tl_theme']['legend_template'] = 'Templateformate';
- 
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_theme']['templateSelection'] = array('Templates', 'Hier können Sie die Zuordnung der Templates und Endgeräte herstellen.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_os'] = array('System', 'Wählen Sie hier das zu filternde System aus.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser'] = array('Browser', 'Wählen Sie hier den zu filternden Browser aus.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser_version'] = array('Version', 'Geben Sie hier die zu filternde Browser Version ein.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_browser_operation'] = array('Operator', 'Geben Sie hier den zu filternden Operator ein.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_mobile'] = array('Mobile', 'Wählen Sie hier aus ob Mobile oder nicht gefiltert werden soll.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_client_is_invert'] = array('Umkehren', 'Hiermit können Sie die Filterlogik umkehren.');
+$GLOBALS['TL_LANG']['tl_theme']['ts_extension'] = array('Templateformat', '');
 ?>

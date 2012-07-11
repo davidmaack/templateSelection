@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2010 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -10,20 +10,20 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  MEN AT WORK 2011
+ * @copyright  MEN AT WORK 2012
  * @package    templateSelection
- * @license    GNU/LGPL
+ * @license    GNU/GPL 2
  * @filesource
  */
 
@@ -44,24 +44,25 @@ class TemplateSelection extends Frontend
      */
     public function changeTemplate(&$template)
     {
-        
+
         if (TL_MODE == 'BE')
         {
             return;
         }
-        
+
         global $objPage;
-        
+
         $arrTemplateSelection = (self::$arrThemeCache[$objPage->id]) ? self::$arrThemeCache[$objPage->id] : false;
 
         if (!$arrTemplateSelection)
         {
-         
+
             $arrTmp = $this->inheritSelection($objPage);
-            if ($objPage->ts_include_selection_noinherit) {
-                    $arrTmp = array_merge($arrTmp, deserialize($objPage->ts_selection_noinherit, true));
+            if ($objPage->ts_include_selection_noinherit)
+            {
+                $arrTmp = array_merge($arrTmp, deserialize($objPage->ts_selection_noinherit, true));
             }
-            
+
             if (count($arrTmp) > 0)
             {
                 self::$arrThemeCache[$objPage->id] = $arrTmp;
@@ -73,13 +74,13 @@ class TemplateSelection extends Frontend
 
                 //get the theme
                 $objTheme = $this->Database->prepare("SELECT l.*, t.templates, t.templateSelection FROM tl_layout l LEFT JOIN tl_theme t ON l.pid=t.id WHERE l.id=? OR l.fallback=1 ORDER BY l.id=? DESC")
-                                                                            ->limit(1)
-                                                                            ->execute($objPage->id, $objPage->id);            
+                        ->limit(1)
+                        ->execute($objPage->id, $objPage->id);
 
                 //store templateSelections in cache
                 $arrTemplateSelection = deserialize($objTheme->templateSelection);
                 self::$arrThemeCache[$objPage->id] = $arrTemplateSelection;
-            }            
+            }
         }
 
         //check for cached results
@@ -93,35 +94,40 @@ class TemplateSelection extends Frontend
         }
 
         //get agent
-        $agent = $this->Environment->agent;
-        if (!is_array($arrTemplateSelection)) return;
-        
+        $objUa = $this->Environment->agent;
+        if (!is_array($arrTemplateSelection))
+            return;
+
         $blnGlobalPermisson = false;
-        foreach ($arrTemplateSelection as $selection)
+        foreach ($arrTemplateSelection as $arrSelector)
         {
 
-            $selection['ts_client_os'] = ($selection['ts_client_os'] != '') ? array('value' => $selection['ts_client_os'], 'config' => $GLOBALS['TL_CONFIG']['os'][$selection['ts_client_os']]) : false;
-            $selection['ts_client_browser']   = ($selection['ts_client_browser'] != '') ? $GLOBALS['TL_CONFIG']['browser'][$selection['ts_client_browser']] : false;
-            
+            $arrSelector['ts_client_os'] = ($arrSelector['ts_client_os'] != '') ? array('value' => $arrSelector['ts_client_os'], 'config' => $GLOBALS['TL_CONFIG']['os'][$arrSelector['ts_client_os']]) : false;
+            $arrSelector['ts_client_browser']   = ($arrSelector['ts_client_browser'] != '') ? $GLOBALS['TL_CONFIG']['browser'][$arrSelector['ts_client_browser']] : false;
+            $arrSelector['ts_client_is_mobile'] = (($arrSelector['ts_client_is_mobile'] != '') ? (($arrSelector['ts_client_is_mobile'] == 1) ? true : false) : 'empty');
+
             $blnPermisson = true;
-            foreach ($selection as $strConfig => $mixedConfig)
+            foreach ($arrSelector as $strConfig => $mixedConfig)
             {
                 switch ($strConfig)
                 {
                     case 'ts_client_os':
-                        $blnPermisson = ($blnPermisson && AgentSelection::checkOsPermission($mixedConfig, $agent));
+                        $blnPermisson = ($blnPermisson && AgentSelection::checkOsPermission($mixedConfig, $objUa));
                         break;
 
                     case 'ts_client_browser':
-                        $blnPermisson = ($blnPermisson && ($mixedConfig['browser'] == $agent->browser || $mixedConfig['browser'] == '')) ? true : false;
+                        $blnPermisson = ($blnPermisson && ($mixedConfig['browser'] == $objUa->browser || $mixedConfig['browser'] == '')) ? true : false;
                         break;
 
                     case 'ts_client_browser_version':
-                        $blnPermisson = ($blnPermisson && ($mixedConfig == $agent->version || $mixedConfig == '')) ? true : false;
+                        $blnPermisson = ($blnPermisson && AgentSelection::checkBrowserVerPermission($mixedConfig, $objUa, $arrSelector['ts_client_browser_operation']));
                         break;
 
                     case 'ts_client_is_mobile':
-                        $blnPermisson = ($blnPermisson && $mixedConfig == $agent->mobile) ? true : false;
+                        if (strlen($mixedConfig) < 2)
+                        {
+                            $blnPermisson = ($blnPermisson && $mixedConfig == $objUa->mobile) ? true : false;
+                        }
                         break;
 
                     case 'ts_client_is_invert':
@@ -130,12 +136,12 @@ class TemplateSelection extends Frontend
                             $blnPermisson = ($blnPermisson) ? false : true;
                         }
                         break;
-                }    
+                }
             }
-            
+
             if ($blnPermisson)
             {
-                $this->extendTemplate($template, $selection['ts_extension']);
+                $this->extendTemplate($template, $arrSelector['ts_extension']);
                 return;
             }
         }
@@ -189,44 +195,38 @@ class TemplateSelection extends Frontend
     {
         return strncmp($strValue, '.', 1) == 0 ? substr($strValue, 1) : $strValue;
     }
-    
+
     /**
-        * Inherit selections from pages.
-        *
-        * @param Database_Result $objPage
-        */
+     * Inherit selections from pages.
+     *
+     * @param Database_Result $objPage
+     */
     public function inheritSelection(Database_Result $objPage)
     {
 
-            if ($objPage->ts_include_selection) {
-                    $arrTemp = deserialize($objPage->ts_selection, true);
-            }
-            else
-            {
-                    $arrTemp = array();
-            }
+        if ($objPage->ts_include_selection)
+        {
+            $arrTemp = deserialize($objPage->ts_selection, true);
+        }
+        else
+        {
+            $arrTemp = array();
+        }
 
-            if ($objPage->pid > 0) {
-                    $objParentPage = $this->Database->prepare("
-                                    SELECT
-                                            *
-                                    FROM
-                                            tl_page
-                                    WHERE
-                                            id=?")
-                            ->execute($objPage->pid);
-                    if ($objParentPage->next()) {
-                            $arrTemp = array_merge
-                            (
-                                    $arrTemp,
-                                    $this->inheritSelection($objParentPage)
-                            );
-                    }
+        if ($objPage->pid > 0)
+        {
+            $objParentPage = $this->Database
+                    ->prepare("SELECT * FROM tl_page WHERE id=?")
+                    ->execute($objPage->pid);
+
+            if ($objParentPage->next())
+            {
+                $arrTemp = array_merge($arrTemp, $this->inheritSelection($objParentPage));
             }
-            return $arrTemp;
-    }    
-    
-    
+        }
+        return $arrTemp;
+    }
+
 }
 
 ?>
