@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2010 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -10,12 +10,12 @@
  * modify it under the terms of the GNU Lesser General Public
  * License as published by the Free Software Foundation, either
  * version 3 of the License, or (at your option) any later version.
- *
+ * 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
  * Lesser General Public License for more details.
- *
+ * 
  * You should have received a copy of the GNU Lesser General Public
  * License along with this program. If not, please visit the Free
  * Software Foundation website at <http://www.gnu.org/licenses/>.
@@ -47,7 +47,7 @@ $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ts_include_selection_noinherit'] =
  */
 $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
     (
-    'label' => &$GLOBALS['TL_LANG']['tl_page']['ts_selection'],
+    'label' => &$GLOBALS['TL_LANG']['tl_page']['templateSelection'],
     'exclude' => true,
     'inputType' => 'multiColumnWizard',
     'eval' => array
@@ -64,7 +64,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                     'getClientOs'
                 ),
                 'eval' => array(
-                    'style' => 'width:100px',
+                    'style' => 'width:125px',
                     'includeBlankOption' => true,
                     'chosen' => true
                 )
@@ -76,7 +76,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                 'inputType' => 'select',
                 'options_callback' => array('AgentSelection', 'getClientBrowser'),
                 'eval' => array(
-                    'style' => 'width:100px',
+                    'style' => 'width:125px',
                     'includeBlankOption' => true,
                     'chosen' => true
                 )
@@ -101,7 +101,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                 'label' => &$GLOBALS['TL_LANG']['tl_page']['ts_client_browser_version'],
                 'inputType' => 'text',
                 'eval' => array(
-                    'style' => 'width:70px'
+                    'style' => 'width:55px'
                 )
             ),
             'ts_client_is_mobile' => array
@@ -130,7 +130,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                 (
                 'label' => &$GLOBALS['TL_LANG']['tl_page']['ts_extension'],
                 'inputType' => 'text',
-                'eval' => array('style' => 'width:100px'),
+                'eval' => array('style' => 'width:75px'),
                 'save_callback' => array(
                     array('TemplateSelection', 'checkFirstDot')
                 )
@@ -140,8 +140,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
 );
 
 // Copy and relabel field
-$GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection_noinherit']          = $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'];
-$GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection_noinherit']['label'] = &$GLOBALS['TL_LANG']['tl_page']['ts_selection'];
+$GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection_noinherit'] = $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'];
 
 
 $GLOBALS['TL_DCA']['tl_page']['fields']['ts_include_selection'] = array
