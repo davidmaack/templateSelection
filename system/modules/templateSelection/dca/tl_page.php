@@ -65,8 +65,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                 ),
                 'eval' => array(
                     'style' => 'width:125px',
-                    'includeBlankOption' => true,
-                    'chosen' => true
+                    'includeBlankOption' => true
                 )
             ),
             'ts_client_browser' => array
@@ -77,8 +76,7 @@ $GLOBALS['TL_DCA']['tl_page']['fields']['ts_selection'] = array
                 'options_callback' => array('AgentSelection', 'getClientBrowser'),
                 'eval' => array(
                     'style' => 'width:125px',
-                    'includeBlankOption' => true,
-                    'chosen' => true
+                    'includeBlankOption' => true
                 )
             ),
             'ts_client_browser_operation' => array
