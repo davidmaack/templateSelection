@@ -2,7 +2,7 @@
 
 /**
  * Contao Open Source CMS
- * Copyright (C) 2005-2011 Leo Feyer
+ * Copyright (C) 2005-2012 Leo Feyer
  *
  * Formerly known as TYPOlight Open Source CMS.
  *
@@ -21,32 +21,28 @@
  * Software Foundation website at <http://www.gnu.org/licenses/>.
  *
  * PHP version 5
- * @copyright  MEN AT WORK 2011
- * @package    Language
- * @license    GNU/LGPL
+ * @copyright  MEN AT WORK 2012
+ * @package    templateSelection
+ * @license    GNU/GPL 2
  * @filesource
  */
 
 /**
- * Fields
- */
-$GLOBALS['TL_LANG']['tl_page']['templateSelection'] = array('Templates', 'Hier können Sie die Zuordnung der Templates und Endgeräte herstellen.');
-$GLOBALS['TL_LANG']['tl_page']['ts_client_os'] = array('Betriebssystem', '');
-$GLOBALS['TL_LANG']['tl_page']['ts_client_browser'] = array('Browser', '');
-$GLOBALS['TL_LANG']['tl_page']['ts_client_browser_version'] = array('Version', 'Geben Sie hier die zu filternde Browser Version ein.');
-$GLOBALS['TL_LANG']['tl_page']['ts_client_is_mobile'] = array('Mobile', '');
-$GLOBALS['TL_LANG']['tl_page']['ts_extension'] = array('Templateformat', '');
-$GLOBALS['TL_LANG']['tl_page']['ts_client_is_invert'] = array('Umkehren', 'Hiermit können Sie die Filterlogik umkehren.');
-
-$GLOBALS['TL_LANG']['tl_page']['ts_include_selection'] = array('TemplateSelection auf dieser und allen Unterseiten aktivieren', 'Alternative Templateformate für verschieden Clients aktivieren');
-$GLOBALS['TL_LANG']['tl_page']['ts_selection'] = array('TemplateSelection', 'Hier können Sie alternative Templateformate für bestimmte Clients einstellen.');
-
-$GLOBALS['TL_LANG']['tl_page']['ts_include_selection_noinherit'] = array('TemplateSelection auf dieser Seite aktivieren', 'Alternative Templateformate für verschieden Clients aktivieren');
-$GLOBALS['TL_LANG']['tl_page']['ts_selection_noinherit'] = $GLOBALS['TL_LANG']['tl_page']['ts_include_selection'];
-
-/**
  * Legend
  */
-$GLOBALS['TL_LANG']['tl_page']['legend_template'] = 'Templateformate';
- 
-?>
+$GLOBALS['TL_LANG']['tl_page']['template_selection_legend']         = 'Templateformate';
+
+/**
+ * Fields
+ */
+$GLOBALS['TL_LANG']['tl_page']['templateSelection']                 = array('Templates', 'Hier können Sie die Zuordnung der Templates und Endgeräte herstellen.');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_os']                      = array('System', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_browser']                 = array('Browser', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_browser_version']         = array('Version', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_browser_operation']       = array('Operator', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_is_mobile']               = array('Mobil', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_client_is_invert']               = array('Umkehren', '');
+$GLOBALS['TL_LANG']['tl_page']['ts_extension']                      = array('Format', '');
+
+$GLOBALS['TL_LANG']['tl_page']['ts_include_selection']              = array('Alternative Templateformate auf dieser und allen Unterseiten aktivieren', 'Alternative Templateformate für Browser und/oder Betriebssysteme aktivieren');
+$GLOBALS['TL_LANG']['tl_page']['ts_include_selection_noinherit']    = array('Alternative Templateformate auf dieser Seite aktivieren', 'Alternative Templateformate für Browser und/oder Betriebssysteme aktivieren');
