@@ -54,7 +54,7 @@ class TemplateSelection extends Frontend
 
         $arrTemplateSelection = (self::$arrThemeCache[$objPage->id]) ? self::$arrThemeCache[$objPage->id] : false;
 
-        if (!$arrTemplateSelection)
+        if ((!$arrTemplateSelection) && ($objPage!=null))
         {
 
             $arrTmp = $this->inheritSelection($objPage);
