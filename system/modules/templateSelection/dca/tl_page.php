@@ -35,8 +35,8 @@ foreach (array('regular', 'root') as $strType)
     $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'ts_include_selection';
     $GLOBALS['TL_DCA']['tl_page']['palettes']['__selector__'][] = 'ts_include_selection_noinherit';
 
-    $GLOBALS['TL_DCA']['tl_page']['palettes'][$strType] = preg_replace(
-            '#({cache_legend:hide}.*);#U', '{template_selection_legend:hide},ts_include_selection,ts_include_selection_noinherit;$1', $GLOBALS['TL_DCA']['tl_page']['palettes'][$strType]
+    $GLOBALS['TL_DCA']['tl_page']['palettes'][$strType] = str_replace(
+            '{cache_legend:hide}', '{template_selection_legend:hide},ts_include_selection,ts_include_selection_noinherit;{cache_legend:hide}', $GLOBALS['TL_DCA']['tl_page']['palettes'][$strType]
     );
 }
 $GLOBALS['TL_DCA']['tl_page']['subpalettes']['ts_include_selection']           = 'ts_selection';
